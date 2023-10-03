@@ -1,0 +1,27 @@
+---
+# https://linuxiac.com/watchtower-automatically-update-docker-container-images/
+
+version: "3"
+
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      TZ: ${TZ}
+      # WATCHTOWER_POLL_INTERVAL: ${WT_POLL_INTERVALL}
+      WATCHTOWER_SCHEDULE: "${WT_SCHEDULE}"
+      WATCHTOWER_CLEANUP: ${WT_CLEANUP}
+      WATCHTOWER_MONITOR_ONLY: ${WT_MONITOR}
+      WATCHTOWER_NOTIFICATIONS: email
+      WATCHTOWER_NOTIFICATIONS_HOSTNAME: ${SERVER_NAME}
+      WATCHTOWER_NOTIFICATION_EMAIL_FROM: ${SMTP_FROM}
+      WATCHTOWER_NOTIFICATION_EMAIL_TO: ${MAILTO}
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER: ${SMTP_HOST}
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT: ${SMTP_PORT}
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER: ${SMTP_USERNAME}
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD: ${SMTP_PASSWORD}
+
+#
