@@ -21,6 +21,9 @@ regbin=$(which regctl)
 # exclude images
 Exclude="watchtower"
 
+EXCLUDE_TAGS="latest|alpine|testing|webauthn|arm|amd|sha|build|^rc|rc-|-rc|jammy|[a-f0-9]{20,}"
+
+
 #-----------------------------------------------------------------------------------------------------
 
 build_line() {
@@ -58,7 +61,7 @@ run_check() {
 	echo "INFO:  LocalHash : $LocalHash"
 
     # get latest image tag
-    LATEST_TAG=$($regbin tag ls "$RepoUrl" | egrep -v "latest|alpine|testing|webauthn|arm|amd|sha|build" | tail -1 | sed -e 's,^v,,g')
+    LATEST_TAG=$($regbin tag ls "$RepoUrl" | egrep -v "$EXCLUDE_TAGS" | sort -n -t "." -k1,1 -k2,2 -k3,3 | tail -1 | sed -e 's,^v,,g')
 
 
     if RegHash=$($regbin image digest --list "$RepoUrl" 2>/dev/null) ; then
