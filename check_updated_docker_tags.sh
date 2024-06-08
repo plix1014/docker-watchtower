@@ -21,7 +21,7 @@ regbin=$(which regctl)
 # exclude images
 Exclude="watchtower"
 
-EXCLUDE_TAGS="latest|alpine|testing|webauthn|arm|amd|sha|build|^rc|rc-|-rc|jammy|[a-f0-9]{20,}"
+EXCLUDE_TAGS="latest|alpine|testing|webauthn|arm|amd|sha|build|^rc|rc-|-rc|jammy|-ubi|-noble|[a-f0-9]{20,}"
 
 
 #-----------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ build_line() {
 run_check() {
     echo "INFO: excluded images: $Exclude"
     printf "INFO: getting images : "
-    IMAGES=$(docker ps --format '{{.Names}} {{.Image}}' | grep -v ":latest" | awk '{print $1}')
+    IMAGES=$(docker ps --format '{{.Names}} {{.Image}}' | egrep -v ":latest|:lts" | awk '{print $1}')
 
     echo "$IMAGES" | tr '\n' ',' | sed -e 's/,$//'
     echo
